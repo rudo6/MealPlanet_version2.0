@@ -34,7 +34,10 @@ public class MySqlUserDao implements UserDao {
         String sql = "select * from user where uzivatelskeMeno = ? and heslo = ?";
         BeanPropertyRowMapper<User> mapper = BeanPropertyRowMapper.newInstance(User.class);
         List<User> pom = jdbcTemplate.query(sql, mapper,uzivatelskeMeno,heslo);
-        return pom;        
+        if(pom.size()==0){
+            return null;
+        }
+        else    return pom;        
     }
     
 }

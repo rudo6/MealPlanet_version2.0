@@ -49,6 +49,9 @@ public class MainForm extends javax.swing.JFrame {
         addButton = new javax.swing.JButton();
         deleteRecipeButton = new javax.swing.JButton();
         prihlasenieButton = new javax.swing.JButton();
+        logOffButton = new javax.swing.JButton();
+        loggedInTextField = new javax.swing.JTextField();
+        isLoggedInLabel = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -127,12 +130,28 @@ public class MainForm extends javax.swing.JFrame {
         });
         getContentPane().add(prihlasenieButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 30, -1, -1));
 
-        setBounds(0, 0, 667, 401);
+        logOffButton.setText("Log off");
+        logOffButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logOffButtonActionPerformed(evt);
+            }
+        });
+        getContentPane().add(logOffButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 30, -1, -1));
+        getContentPane().add(loggedInTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 30, 90, -1));
+
+        isLoggedInLabel.setText("is logged in");
+        getContentPane().add(isLoggedInLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 30, -1, -1));
+
+        setBounds(0, 0, 681, 401);
     }// </editor-fold>//GEN-END:initComponents
 
     private void myRecipesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_myRecipesButtonActionPerformed
-        List<Recipe> myRecipes = recipeDao.getAll();        //nacitaju sa recepty do zoznamu 
-        foundRecipesList.setListData(myRecipes.toArray());  //recepty zo zoznamu "nakreslime" do jListu
+        if (prihlaseny == false) {
+            JOptionPane.showMessageDialog(this, "Nie si prihlaseny");
+        } else {
+            List<Recipe> myRecipes = recipeDao.getAll();        //nacitaju sa recepty do zoznamu 
+            foundRecipesList.setListData(myRecipes.toArray());  //recepty zo zoznamu "nakreslime" do jListu
+        }
     }//GEN-LAST:event_myRecipesButtonActionPerformed
     
     private void setMealTypesCombobox(){
@@ -177,22 +196,34 @@ public class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_randomButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        AddForm addForm = new AddForm(); //len sa zobrazi okno na pridanie recptu
-        addForm.setVisible(true);
-        addForm.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        if (prihlaseny == false) {
+            JOptionPane.showMessageDialog(this, "Nie si prihlaseny");
+        } else {
+            AddForm addForm = new AddForm(); //len sa zobrazi okno na pridanie recptu
+            addForm.setVisible(true);
+            addForm.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        }
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void deleteRecipeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteRecipeButtonActionPerformed
-        Recipe recipe = recipeDao.getMatchingName(foundRecipesList.getSelectedValue().toString()).get(0); //recept,ktory chceme vymazat
-        //vytvorime okno pre potvrdenie vymazania receptu
-        int dialogButton = JOptionPane.YES_NO_OPTION;
-        int dialogResult = JOptionPane.showConfirmDialog(this, "Are you sure ?", "Watch out", dialogButton);
-        if (dialogResult == 0) {
-            //az ked potvrdime odstranenie recpetu tak sa naozaj vymaze , inak sa nic nestane a recept ostane
-            relationDao.delete(recipe.getIdR());
-            recipeDao.remove(recipe);
-            List<Recipe> myRecipes = recipeDao.getAll();
-            foundRecipesList.setListData(myRecipes.toArray());
+        if (prihlaseny == false) {
+            JOptionPane.showMessageDialog(this, "Nie si prihlaseny");
+        } else {
+            if (foundRecipesList.getSelectedValue() == null) {
+                JOptionPane.showMessageDialog(this, "Nebol zvoleny recept!");
+            } else {
+                Recipe recipe = recipeDao.getMatchingName(foundRecipesList.getSelectedValue().toString()).get(0); //recept,ktory chceme vymazat
+                //vytvorime okno pre potvrdenie vymazania receptu
+                int dialogButton = JOptionPane.YES_NO_OPTION;
+                int dialogResult = JOptionPane.showConfirmDialog(this, "Are you sure ?", "Watch out", dialogButton);
+                if (dialogResult == 0) {
+                    //az ked potvrdime odstranenie recpetu tak sa naozaj vymaze , inak sa nic nestane a recept ostane
+                    relationDao.delete(recipe.getIdR());
+                    recipeDao.remove(recipe);
+                    List<Recipe> myRecipes = recipeDao.getAll();
+                    foundRecipesList.setListData(myRecipes.toArray());
+                }
+            }
         }
     }//GEN-LAST:event_deleteRecipeButtonActionPerformed
 
@@ -202,10 +233,22 @@ public class MainForm extends javax.swing.JFrame {
             pf.setVisible(true);
             this.prihlaseny=pf.getPrihlaseny();
             this.idP=pf.getIdP();
+            loggedInTextField.setText(pf.getName());
         }else{
             JOptionPane.showMessageDialog(this, "Pouzivatel je stale prihlaseny!");
         }
     }//GEN-LAST:event_prihlasenieButtonActionPerformed
+
+    private void logOffButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOffButtonActionPerformed
+        if(prihlaseny==false){
+            JOptionPane.showMessageDialog(this, "Nie si prihlaseny!");
+        }else{
+            this.prihlaseny=false;
+            this.idP=null;
+            loggedInTextField.setText("");
+            JOptionPane.showMessageDialog(this, "Odhlaseny!");
+        }
+    }//GEN-LAST:event_logOffButtonActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -245,8 +288,11 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JButton deleteRecipeButton;
     private javax.swing.JList foundRecipesList;
     private javax.swing.JLabel headerLabel;
+    private javax.swing.JLabel isLoggedInLabel;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton logOffButton;
+    private javax.swing.JTextField loggedInTextField;
     private javax.swing.JButton myRecipesButton;
     private javax.swing.JButton prihlasenieButton;
     private javax.swing.JButton randomButton;

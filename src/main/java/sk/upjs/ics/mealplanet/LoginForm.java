@@ -15,6 +15,7 @@ public class LoginForm extends javax.swing.JDialog {
 
     private boolean prihlaseny = false;
     private Long idP = null;
+    private String name = null;
     
     /**
      * Creates new form LoginForm
@@ -95,6 +96,7 @@ public class LoginForm extends javax.swing.JDialog {
         else{
             this.idP=pd.getUser(uzivatelskeMenoTextField.getText(), hesloTextField.getText()).get(0).getId();
             this.prihlaseny=true;
+            this.name=uzivatelskeMenoTextField.getText();
         }
 
         setVisible(false);
@@ -109,6 +111,10 @@ public class LoginForm extends javax.swing.JDialog {
     }
     public Long getIdP(){
         return this.idP;
+    }
+    
+    public String getName(){
+        return name;
     }
     
     /**
