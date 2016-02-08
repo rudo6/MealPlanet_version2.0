@@ -23,6 +23,9 @@ public class MainForm extends javax.swing.JFrame {
     private RelationDao relationDao = RelationDaoFactory.INSTANCE.getRelationDao();
     private MealTypeDao mealTypeDao = MealTypeDaoFactory.INSTANCE.getMealTypeDao();
     
+    private boolean prihlaseny = false;
+    private Long idP = null;
+    
     public MainForm() {
         initComponents();
         setLocationRelativeTo(null);     // okno sa otvori v strede obbrazovky   
@@ -45,7 +48,7 @@ public class MainForm extends javax.swing.JFrame {
         randomButton = new javax.swing.JButton();
         addButton = new javax.swing.JButton();
         deleteRecipeButton = new javax.swing.JButton();
-        bgroundLabel = new javax.swing.JLabel();
+        prihlasenieButton = new javax.swing.JButton();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -62,8 +65,6 @@ public class MainForm extends javax.swing.JFrame {
         setTitle("Meal Planet");
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        headerLabel.setIcon(new javax.swing.ImageIcon("C:\\Users\\Patrik\\Pictures\\PS\\MealPlanet\\PAZ1cMealplanetMiniLogo.png")); // NOI18N
         getContentPane().add(headerLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 0, -1, -1));
 
         foundRecipesList.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -118,8 +119,13 @@ public class MainForm extends javax.swing.JFrame {
         });
         getContentPane().add(deleteRecipeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 144, -1));
 
-        bgroundLabel.setIcon(new javax.swing.ImageIcon("C:\\Users\\Patrik\\Pictures\\PS\\MealPlanet\\PAZ1cMealplanetBGsimple-OptimalSoft.jpg")); // NOI18N
-        getContentPane().add(bgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 660, 370));
+        prihlasenieButton.setText("Log in");
+        prihlasenieButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                prihlasenieButtonActionPerformed(evt);
+            }
+        });
+        getContentPane().add(prihlasenieButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 30, -1, -1));
 
         setBounds(0, 0, 667, 401);
     }// </editor-fold>//GEN-END:initComponents
@@ -190,6 +196,17 @@ public class MainForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_deleteRecipeButtonActionPerformed
 
+    private void prihlasenieButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prihlasenieButtonActionPerformed
+        if (prihlaseny == false) {
+            LoginForm pf = new LoginForm(this, true);
+            pf.setVisible(true);
+            this.prihlaseny=pf.getPrihlaseny();
+            this.idP=pf.getIdP();
+        }else{
+            JOptionPane.showMessageDialog(this, "Pouzivatel je stale prihlaseny!");
+        }
+    }//GEN-LAST:event_prihlasenieButtonActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -225,13 +242,13 @@ public class MainForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
-    private javax.swing.JLabel bgroundLabel;
     private javax.swing.JButton deleteRecipeButton;
     private javax.swing.JList foundRecipesList;
     private javax.swing.JLabel headerLabel;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton myRecipesButton;
+    private javax.swing.JButton prihlasenieButton;
     private javax.swing.JButton randomButton;
     private javax.swing.JButton searchButton;
     private javax.swing.JTextField searchTextField;
