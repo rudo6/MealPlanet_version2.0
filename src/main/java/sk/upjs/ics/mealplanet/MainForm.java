@@ -145,7 +145,12 @@ public class MainForm extends javax.swing.JFrame {
         isLoggedInLabel.setText("is logged in");
         getContentPane().add(isLoggedInLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 0, -1, 30));
 
-        registerButton.setText("Register");
+        registerButton.setText("Register here");
+        registerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registerButtonActionPerformed(evt);
+            }
+        });
         getContentPane().add(registerButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 10, -1, -1));
 
         setBounds(0, 0, 681, 401);
@@ -258,6 +263,11 @@ public class MainForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Odhlaseny!");
         }
     }//GEN-LAST:event_logOffButtonActionPerformed
+
+    private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
+        RegisterForm rf = new RegisterForm(this, true);
+        rf.setVisible(true);
+    }//GEN-LAST:event_registerButtonActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

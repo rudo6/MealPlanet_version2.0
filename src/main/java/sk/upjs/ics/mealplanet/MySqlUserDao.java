@@ -19,7 +19,7 @@ public class MySqlUserDao implements UserDao {
     
     @Override
     public void addUser(User user) {
-         String sql = "INSERT INTO user VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+         String sql = "INSERT INTO user VALUES(?,?,?,?,?,?,?,?)";
         jdbcTemplate.update(sql,null,user.getUzivatelskeMeno(), user.getHeslo(), user.getMeno(), user.getPriezvisko(),
                 user.getAdresa(), user.getTelefonneCislo(), user.getEmail());
     }
