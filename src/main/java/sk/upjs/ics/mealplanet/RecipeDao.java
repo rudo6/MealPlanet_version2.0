@@ -18,4 +18,6 @@ public interface RecipeDao {
     
     public List<Recipe> getLast();
     
+    public List<Recipe> getByIdP(long idP);
+    
 }

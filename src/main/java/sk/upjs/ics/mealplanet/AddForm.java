@@ -15,10 +15,22 @@ public class AddForm extends javax.swing.JFrame {
     private Map<Ingredient, String> addedIngredients = new HashMap<Ingredient, String>();
     private List<String> addedIngredientsNames = new ArrayList<String>();  //na pracu s vybratymi ingredienciami v jListe
     private MealTypeDao mealTypeDao = MealTypeDaoFactory.INSTANCE.getMealTypeDao();
+    
+    private Long idP;
 
     public AddForm() {
         //nastavi sa cely addform
         initComponents();
+        setLocationRelativeTo(null);
+        this.setMealTypesCombobox(); //nastavi sa mealtypeCombobox
+        this.setIngredientsCombobox(); //nastavi sa ingredientsCombobox
+        this.stepsTextArea.setLineWrap(true);
+        this.stepsTextArea.setWrapStyleWord(true);
+    }
+    
+    public AddForm(Long idP){
+        initComponents();
+        this.idP=idP;
         setLocationRelativeTo(null);
         this.setMealTypesCombobox(); //nastavi sa mealtypeCombobox
         this.setIngredientsCombobox(); //nastavi sa ingredientsCombobox
@@ -271,6 +283,7 @@ public class AddForm extends javax.swing.JFrame {
         recipe.setPrepTime(prepTime);
         recipe.setType(type);
         recipe.setIdR(newIdr);
+        recipe.setIdP(idP);
 //vlozenie receptu do databazy
         recipeDao.add(recipe);
 //pridanie Relations do databazy

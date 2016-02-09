@@ -22,8 +22,8 @@ public class MySqlRecipeDao implements RecipeDao {
 
     @Override
     public void add(Recipe recipe) {
-        String sql = "INSERT INTO recipes VALUES(?,?,?,?,?,?)";
-        jdbcTemplate.update(sql, recipe.getIdR(), recipe.getName(), recipe.getPrepTime(), recipe.getSteps(), recipe.getRating(), recipe.getType());
+        String sql = "INSERT INTO recipes VALUES(?,?,?,?,?,?,?)";
+        jdbcTemplate.update(sql, recipe.getIdP(),recipe.getIdR(), recipe.getName(), recipe.getPrepTime(), recipe.getSteps(), recipe.getRating(), recipe.getType());
     }
 
     @Override
@@ -95,6 +95,13 @@ public class MySqlRecipeDao implements RecipeDao {
             }
         }
         return matchingRecipes;
+    }
+
+    @Override
+    public List<Recipe> getByIdP(long idP) {
+        String sql = "SELECT * FROM recipes where idP = ?";
+        BeanPropertyRowMapper<Recipe> mapper = BeanPropertyRowMapper.newInstance(Recipe.class);//tovaren pre rowmapper
+        return jdbcTemplate.query(sql, mapper, idP);
     }
 
 }

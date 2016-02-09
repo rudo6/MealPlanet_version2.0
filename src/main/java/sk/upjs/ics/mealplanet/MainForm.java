@@ -52,6 +52,7 @@ public class MainForm extends javax.swing.JFrame {
         logOffButton = new javax.swing.JButton();
         loggedInTextField = new javax.swing.JTextField();
         isLoggedInLabel = new javax.swing.JLabel();
+        registerButton = new javax.swing.JButton();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -128,7 +129,7 @@ public class MainForm extends javax.swing.JFrame {
                 prihlasenieButtonActionPerformed(evt);
             }
         });
-        getContentPane().add(prihlasenieButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 30, -1, -1));
+        getContentPane().add(prihlasenieButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 10, 70, -1));
 
         logOffButton.setText("Log off");
         logOffButton.addActionListener(new java.awt.event.ActionListener() {
@@ -136,11 +137,16 @@ public class MainForm extends javax.swing.JFrame {
                 logOffButtonActionPerformed(evt);
             }
         });
-        getContentPane().add(logOffButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 30, -1, -1));
-        getContentPane().add(loggedInTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 30, 90, -1));
+        getContentPane().add(logOffButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 40, 70, -1));
+
+        loggedInTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        getContentPane().add(loggedInTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, -1));
 
         isLoggedInLabel.setText("is logged in");
-        getContentPane().add(isLoggedInLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 30, -1, -1));
+        getContentPane().add(isLoggedInLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 0, -1, 30));
+
+        registerButton.setText("Register");
+        getContentPane().add(registerButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 10, -1, -1));
 
         setBounds(0, 0, 681, 401);
     }// </editor-fold>//GEN-END:initComponents
@@ -149,7 +155,8 @@ public class MainForm extends javax.swing.JFrame {
         if (prihlaseny == false) {
             JOptionPane.showMessageDialog(this, "Nie si prihlaseny");
         } else {
-            List<Recipe> myRecipes = recipeDao.getAll();        //nacitaju sa recepty do zoznamu 
+            //List<Recipe> myRecipes = recipeDao.getAll();        //nacitaju sa recepty do zoznamu 
+            List<Recipe> myRecipes = recipeDao.getByIdP(idP);
             foundRecipesList.setListData(myRecipes.toArray());  //recepty zo zoznamu "nakreslime" do jListu
         }
     }//GEN-LAST:event_myRecipesButtonActionPerformed
@@ -199,7 +206,7 @@ public class MainForm extends javax.swing.JFrame {
         if (prihlaseny == false) {
             JOptionPane.showMessageDialog(this, "Nie si prihlaseny");
         } else {
-            AddForm addForm = new AddForm(); //len sa zobrazi okno na pridanie recptu
+            AddForm addForm = new AddForm(idP); //len sa zobrazi okno na pridanie recptu
             addForm.setVisible(true);
             addForm.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         }
@@ -214,15 +221,17 @@ public class MainForm extends javax.swing.JFrame {
             } else {
                 Recipe recipe = recipeDao.getMatchingName(foundRecipesList.getSelectedValue().toString()).get(0); //recept,ktory chceme vymazat
                 //vytvorime okno pre potvrdenie vymazania receptu
-                int dialogButton = JOptionPane.YES_NO_OPTION;
-                int dialogResult = JOptionPane.showConfirmDialog(this, "Are you sure ?", "Watch out", dialogButton);
-                if (dialogResult == 0) {
-                    //az ked potvrdime odstranenie recpetu tak sa naozaj vymaze , inak sa nic nestane a recept ostane
-                    relationDao.delete(recipe.getIdR());
-                    recipeDao.remove(recipe);
-                    List<Recipe> myRecipes = recipeDao.getAll();
-                    foundRecipesList.setListData(myRecipes.toArray());
-                }
+                if (this.idP == recipe.getIdP()) {
+                    int dialogButton = JOptionPane.YES_NO_OPTION;
+                    int dialogResult = JOptionPane.showConfirmDialog(this, "Are you sure ?", "Watch out", dialogButton);
+                    if (dialogResult == 0) {
+                        //az ked potvrdime odstranenie recpetu tak sa naozaj vymaze , inak sa nic nestane a recept ostane
+                        relationDao.delete(recipe.getIdR());
+                        recipeDao.remove(recipe);
+                        List<Recipe> myRecipes = recipeDao.getAll();
+                        foundRecipesList.setListData(myRecipes.toArray());
+                    }
+                } else JOptionPane.showMessageDialog(this, "Nemozete zmazat recept ineho usera!");
             }
         }
     }//GEN-LAST:event_deleteRecipeButtonActionPerformed
@@ -296,6 +305,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JButton myRecipesButton;
     private javax.swing.JButton prihlasenieButton;
     private javax.swing.JButton randomButton;
+    private javax.swing.JButton registerButton;
     private javax.swing.JButton searchButton;
     private javax.swing.JTextField searchTextField;
     private javax.swing.JComboBox typeComboBox;

@@ -270,12 +270,12 @@ public class EditForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Recipe name requested");
             return;
         }
-        List<Recipe> nameTest = recipeDao.getMatchingName(name);// tu da recepty s rovnakym menom ako to niekto zada
+        /*List<Recipe> nameTest = recipeDao.getMatchingName(name);// tu da recepty s rovnakym menom ako to niekto zada
         if(!nameTest.isEmpty()){
-            //ak sa v tom zozname nic nenachadza tak OK, ak v nom nieco je tak treba zmenit meno
-            JOptionPane.showMessageDialog(this, "Recipe with the same name is already in use, please choose another name.");
-            return;
-        }
+        //ak sa v tom zozname nic nenachadza tak OK, ak v nom nieco je tak treba zmenit meno
+        JOptionPane.showMessageDialog(this, "Recipe with the same name is already in use, please choose another name.");
+        return;
+        }*/
         if (type == 0) {
             JOptionPane.showMessageDialog(this, "Meal type requested");
             return;

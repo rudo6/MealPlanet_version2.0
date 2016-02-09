@@ -4,6 +4,8 @@ import java.util.List;
 
 
 public class Recipe {// toto neni celkovy recept ale recept s jednou ingredienciou
+    
+    private long idP;
 
     private long idR;
    
@@ -91,6 +93,20 @@ public class Recipe {// toto neni celkovy recept ale recept s jednou ingredienci
     @Override
     public String toString() {
         return this.name;
+    }
+
+    /**
+     * @return the idP
+     */
+    public long getIdP() {
+        return idP;
+    }
+
+    /**
+     * @param idP the idP to set
+     */
+    public void setIdP(long idP) {
+        this.idP = idP;
     }
     
     
