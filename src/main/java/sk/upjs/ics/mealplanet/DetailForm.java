@@ -2,14 +2,27 @@ package sk.upjs.ics.mealplanet;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 public class DetailForm extends javax.swing.JFrame {
 
     private Recipe recipe;
     private RelationDao relationDao = RelationDaoFactory.INSTANCE.getRelationDao();
 
+    private long idP;
     
     public DetailForm() {
+        //konstruktor nastavi jTextArea tak aby dobre vyzeral
+        initComponents();
+        setLocationRelativeTo(null);     
+        this.stepsTextArea.setLineWrap(true);
+        this.stepsTextArea.setWrapStyleWord(true);
+        this.stepsTextArea.setEditable(false);
+        this.stepsTextArea.setCaretPosition(0);        
+    }
+    
+    public DetailForm(long idP) {
+        this.idP=idP;
         //konstruktor nastavi jTextArea tak aby dobre vyzeral
         initComponents();
         setLocationRelativeTo(null);     
@@ -155,12 +168,16 @@ public class DetailForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void editRecipeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editRecipeButtonActionPerformed
-        //otvori sa nove okno pre editovanie receptu
-        EditForm editForm = new EditForm();
-        editForm.setRecipeToForm(recipe); //tu sa nastavia do editovacieho okna informacie, ktore uz o recepte pozname
-        editForm.setVisible(true);
-        editForm.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        this.setVisible(false);
+        if (idP != recipe.getIdP()) {
+            JOptionPane.showMessageDialog(this, "You cant update other users recipes!");
+        } else {
+            //otvori sa nove okno pre editovanie receptu
+            EditForm editForm = new EditForm();
+            editForm.setRecipeToForm(recipe); //tu sa nastavia do editovacieho okna informacie, ktore uz o recepte pozname
+            editForm.setVisible(true);
+            editForm.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            this.setVisible(false);
+        }
     }//GEN-LAST:event_editRecipeButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed

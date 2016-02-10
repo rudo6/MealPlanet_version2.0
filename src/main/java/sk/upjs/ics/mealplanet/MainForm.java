@@ -191,11 +191,22 @@ public class MainForm extends javax.swing.JFrame {
     private void foundRecipesListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_foundRecipesListMouseClicked
         if (evt.getClickCount() == 2) {
             //po dvojkliku sa otvori okno s detailom recpetu do ktoreho posleme aj dany recept
-            List<Recipe> recipe = recipeDao.getMatchingName(foundRecipesList.getSelectedValue().toString());
-            DetailForm detailForm = new DetailForm();
-            detailForm.setRecipe(recipe.get(0)); //tu posielame recept z mainformu do detailformu
-            detailForm.setVisible(true); //otvori sa okno
-            detailForm.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            if (foundRecipesList.getSelectedValue()==null) {
+                JOptionPane.showMessageDialog(this, "List receptov je prazdny!");
+            } else {
+                List<Recipe> recipe = recipeDao.getMatchingName(foundRecipesList.getSelectedValue().toString());
+                if (prihlaseny == true) {
+                    DetailForm detailForm = new DetailForm(idP);
+                    detailForm.setRecipe(recipe.get(0)); //tu posielame recept z mainformu do detailformu
+                    detailForm.setVisible(true); //otvori sa okno
+                    detailForm.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                } else {
+                    DetailForm detailForm = new DetailForm();
+                    detailForm.setRecipe(recipe.get(0)); //tu posielame recept z mainformu do detailformu
+                    detailForm.setVisible(true); //otvori sa okno
+                    detailForm.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                }
+            }
         }
     }//GEN-LAST:event_foundRecipesListMouseClicked
     
